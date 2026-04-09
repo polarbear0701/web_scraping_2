@@ -1,0 +1,1 @@
+a web-scraping application that gets news data. this repository focus solely on news extraction
