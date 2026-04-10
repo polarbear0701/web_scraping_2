@@ -31,8 +31,16 @@ def parse_rss_feed(url: str) -> Dict:
             )
         
         if config.EXPORT_JSON:
-            with open(f"{output_dir}/rss_output.json", "w", encoding="utf-8") as f:
-                json.dump(entries, f, ensure_ascii=False, indent=2)
+            output_file = output_dir / "rss_output.json"
+            existing_entries: List[Dict[str, str]] = []
+            if output_file.exists():
+                with open(output_file, "r", encoding="utf-8") as f:
+                    try:
+                        existing_entries = json.load(f)
+                    except json.JSONDecodeError:
+                        existing_entries = []
+            with open(output_file, "w", encoding="utf-8") as f:
+                json.dump(existing_entries + entries, f, ensure_ascii=False, indent=2)
 
         return {
             "success": True,
