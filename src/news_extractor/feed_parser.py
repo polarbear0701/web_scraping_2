@@ -33,7 +33,7 @@ def parse_rss_feed(url: str, category: str = None) -> Dict:
             )
         
         if config.EXPORT_JSON:
-            output_file = output_dir / "rss_output.json"
+            output_file = output_dir / f"rss_output_{date_generator()}.json"
             existing_entries: List[Dict[str, str]] = []
             if output_file.exists():
                 with open(output_file, "r", encoding="utf-8") as f:
@@ -60,6 +60,6 @@ def parse_rss_feed(url: str, category: str = None) -> Dict:
         
 def date_generator() -> str:
     date = datetime.datetime.now()
-    return_date = f"{date.date}/{date.strftime("%H")}"
+    return_date = f"{date.date()}-{date.strftime("%H")}h"
     return return_date
     
