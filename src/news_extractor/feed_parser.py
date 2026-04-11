@@ -3,8 +3,9 @@ from typing import Dict, List
 import feedparser
 import src.config.configuration as config
 import json
+import datetime
 
-def parse_rss_feed(url: str) -> Dict:
+def parse_rss_feed(url: str, category: str = None) -> Dict:
     output_dir = Path("src/output")
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -26,7 +27,8 @@ def parse_rss_feed(url: str) -> Dict:
                 {
                     "title": item['title'],
                     "url": item['link'],
-                    "published_at": item["published"]
+                    "published_at": item["published"],
+                    "category": category
                 }
             )
         
@@ -55,3 +57,9 @@ def parse_rss_feed(url: str) -> Dict:
             "feed_title": None,
             "entries": [],
         }
+        
+def date_generator() -> str:
+    date = datetime.datetime.now()
+    return_date = f"{date.date}/{date.strftime("%H")}"
+    return return_date
+    
