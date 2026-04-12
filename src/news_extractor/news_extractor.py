@@ -28,12 +28,18 @@ def parse_rss_feed(url: str, category: str = None) -> Dict:
             
             item_url = item.get("link", "")
             item_urls.append(item_url)
-            meta_rows.append({
+
+            item_extracted = {
                 "title": item.get("title", ""),
-                "url": item_url,
-                "published_at": item.get("published", ""),
                 "category": category,
-            })
+            }
+
+            if (config.INCLUDE_PUBLISHED):
+                item_extracted["published_at"] = item.get("published", "")
+            if (config.INCLUDE_URLS):
+                item_extracted['url'] = item_url
+
+            meta_rows.append(item_extracted)
         contents = list(
             thread_map(
                 news_content_extractor,
